@@ -9,11 +9,12 @@ private:
 	std::vector<int> vect;
 	int a;
 	int b;
+	bool sorted = false;
 
 public:
 	void genVector();
 	std::vector<int> getVector();
-	std::vector<int> selectionSort(std::vector<int> vect);
+	void selectionSort(std::vector<int> vect, SDL_Renderer* renderer);
 	void clearVector();
 };
 

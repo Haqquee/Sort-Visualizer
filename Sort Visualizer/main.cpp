@@ -2,10 +2,15 @@
 #include <SDL.h>
 #include <random>
 #include "Sorts.h"
-#include "Draw.h"
+#include "Vector.h"
+#include "Interface.h"
 
 const int WINDOW_X = 960;
 const int WINDOW_Y = 540;
+const int GENERATE_BUTTON_WIDTH = 125;
+const int GENERATE_BUTTON_HEIGHT = 50;
+const int GENERATE_BUTTON_X = 700;
+const int GENERATE_BUTTON_Y = 200;
 SDL_Window* window = NULL;
 SDL_Renderer* renderer = NULL;
 SDL_Surface* screenSurface = NULL;
@@ -13,11 +18,10 @@ SDL_Surface* screenSurface = NULL;
 
 int main(int argc, char* argv[]) 
 {
-	Sorts sort;
-	sort.genVector();
-	std::vector<int> randomVector = sort.getVector();
+	Vector vector;
+	Interface interface;
 	
-	// SDL Setup
+	// SDL Initialization
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
 		printf("SDL could not initialize! SDL_Error: %s\n", SDL_GetError());
@@ -34,37 +38,53 @@ int main(int argc, char* argv[])
 		{
 			SDL_Event event;
 			bool quit = false;
+
+			// Initialize objects/variables
+			vector.generateVector();
+			std::vector<int>vec = vector.getVector();
+			SDL_Rect generateButton = { GENERATE_BUTTON_X , GENERATE_BUTTON_Y, GENERATE_BUTTON_WIDTH, GENERATE_BUTTON_HEIGHT };
+			interface.drawUI(generateButton, renderer);
+			SDL_RenderPresent(renderer);
+
 			while (!quit) 
 			{ 
 				while (SDL_PollEvent(&event))
-				{ 
+				{
 					if (event.type == SDL_QUIT) 
 					{
 						quit = true;
 					}
-				}
-
-				
-				for (int i = 0; i < randomVector.size(); i++)
-				{
-					for (int j = i; j < randomVector.size(); j++)
+					if (event.type == SDL_MOUSEBUTTONDOWN)
 					{
-						if (randomVector[j] < randomVector[i])
+	
+						if (interface.buttonPressed(generateButton, event.button.x, event.button.y))
 						{
-							std::swap(randomVector[j], randomVector[i]);
+							vector.generateVector();
+							std::vector<int>vec = vector.getVector();
+							std::cout << vec[0] << std::endl;
+							SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+							SDL_RenderClear(renderer);
+							interface.drawUI(generateButton, renderer);
+							vector.drawVectorInstant(vec, renderer);
+							SDL_RenderPresent(renderer);
+				
 						}
-						SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-						SDL_RenderClear(renderer);
-						drawUpdate(randomVector, renderer, i, j);
-						drawUI(renderer);
-						SDL_RenderPresent(renderer);
-						SDL_Delay(1);
+		
 					}
 				}
-				for (int i = 0; i < 100; i++)
-				{
-					std::cout << randomVector[i] << std::endl;
-				}
+				
+				//
+				//
+				//SDL_RenderClear(renderer);
+				//drawUI(renderer);
+				//SDL_RenderPresent(renderer);
+				
+				//SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+				//SDL_RenderClear(renderer);
+				//interface.drawUI(generateButton, renderer);
+				//vector.drawVectorInstant(vec, renderer);
+				//SDL_RenderPresent(renderer);
+				
 			}
 		}
 	}
