@@ -43,6 +43,8 @@ int main(int argc, char* argv[])
 			vector.generateVector();
 			std::vector<int>vec = vector.getVector();
 			SDL_Rect generateButton = { GENERATE_BUTTON_X , GENERATE_BUTTON_Y, GENERATE_BUTTON_WIDTH, GENERATE_BUTTON_HEIGHT };
+			SDL_Rect SSButton = { GENERATE_BUTTON_X + 33 , GENERATE_BUTTON_Y + 60, GENERATE_BUTTON_WIDTH / 2, GENERATE_BUTTON_HEIGHT };
+			SDL_Rect BSButton = { GENERATE_BUTTON_X + 33 , GENERATE_BUTTON_Y + 60*2, GENERATE_BUTTON_WIDTH / 2, GENERATE_BUTTON_HEIGHT };
 			interface.drawUI(generateButton, renderer);
 			SDL_RenderPresent(renderer);
 
@@ -61,29 +63,43 @@ int main(int argc, char* argv[])
 						{
 							vector.generateVector();
 							std::vector<int>vec = vector.getVector();
-							std::cout << vec[0] << std::endl;
 							SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
 							SDL_RenderClear(renderer);
 							interface.drawUI(generateButton, renderer);
+							interface.drawUI(SSButton, renderer);
+							interface.drawUI(BSButton, renderer);
 							vector.drawVectorInstant(vec, renderer);
 							SDL_RenderPresent(renderer);
 				
+						}
+						if (interface.buttonPressed(SSButton, event.button.x, event.button.y))
+						{
+							std::vector<int>vec = vector.getVector();
+							SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+							SDL_RenderClear(renderer);
+							selectionSort(vec, renderer);
+							interface.drawUI(generateButton, renderer);
+							interface.drawUI(SSButton, renderer);
+							interface.drawUI(BSButton, renderer);
+							SDL_RenderPresent(renderer);
+
+						}
+						if (interface.buttonPressed(BSButton, event.button.x, event.button.y))
+						{
+							std::vector<int>vec = vector.getVector();
+							SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
+							SDL_RenderClear(renderer);
+							bubbleSort(vec, renderer);
+							interface.drawUI(generateButton, renderer);
+							interface.drawUI(SSButton, renderer);
+							interface.drawUI(BSButton, renderer);
+							SDL_RenderPresent(renderer);
+
 						}
 		
 					}
 				}
 				
-				//
-				//
-				//SDL_RenderClear(renderer);
-				//drawUI(renderer);
-				//SDL_RenderPresent(renderer);
-				
-				//SDL_SetRenderDrawColor(renderer, 0, 0, 0, 255);
-				//SDL_RenderClear(renderer);
-				//interface.drawUI(generateButton, renderer);
-				//vector.drawVectorInstant(vec, renderer);
-				//SDL_RenderPresent(renderer);
 				
 			}
 		}

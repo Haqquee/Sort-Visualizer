@@ -22,7 +22,7 @@ void Vector::clearVector()
 }
 
 
-void Vector::drawVectorInstant(std::vector<int> vector, SDL_Renderer* renderer) // Instantly draws the entire vector on screen
+void Vector::drawVectorInstant(std::vector<int> vector, SDL_Renderer* renderer)
 {
 	int count = 0;
 	for (int i : vector)
@@ -30,11 +30,13 @@ void Vector::drawVectorInstant(std::vector<int> vector, SDL_Renderer* renderer) 
 		SDL_Rect rect = { count * 6, 540 - vector[i] * 5, 5, vector[i] * 5 };
 		SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
 		SDL_RenderFillRect(renderer, &rect);
+		SDL_RenderPresent(renderer);
+		SDL_Delay(5);
 		count += 1;
 	}
 }
 
-void Vector::drawVectorState(std::vector<int> vector, SDL_Renderer* renderer, int a, int b) // Draws each state of the vector with a delay to help visualize
+void Vector::drawVectorState(std::vector<int> vector, SDL_Renderer* renderer, int a, int b)
 {
 	{
 		int count = 0;
@@ -57,8 +59,8 @@ void Vector::drawVectorState(std::vector<int> vector, SDL_Renderer* renderer, in
 			}
 			//SDL_RenderDrawRect(renderer, &rect);
 			SDL_RenderFillRect(renderer, &rect);
-
 			count += 1;
 		}
+		SDL_Delay(1);
 	}
 }
