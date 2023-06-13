@@ -1,10 +1,13 @@
 #include "Interface.h"
 
-void Interface::drawUI(SDL_Rect& button, SDL_Renderer* renderer)
+void Interface::drawUI(SDL_Rect& button, SDL_Renderer* renderer, const std::string& texturePath)
 {
-	
-	SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
-	SDL_RenderFillRect(renderer, &button);
+	SDL_Surface* surface = IMG_Load(texturePath.c_str());
+	SDL_Texture* texture = SDL_CreateTextureFromSurface(renderer, surface);
+	SDL_RenderCopy(renderer, texture, nullptr, &button);
+	SDL_RenderPresent(renderer);
+	//SDL_SetRenderDrawColor(renderer, 255, 255, 255, 255);
+	//SDL_RenderFillRect(renderer, &button);
 
 }
 
